@@ -11,5 +11,6 @@ public interface IEmployeeService{
 	void addEmployee(Employee employee);
 	void updateEmployee(Employee employee, int empId);
 	void deleteEmployee(int empId);
+	List<Employee> getEmployeeByFirstNameAndDeptName(String deptName,String empId);
 
 }

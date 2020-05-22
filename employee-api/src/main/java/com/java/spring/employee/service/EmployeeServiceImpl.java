@@ -34,6 +34,12 @@ public class EmployeeServiceImpl implements IEmployeeService{
 	}
 
 	@Override
+	public List<Employee> getEmployeeByFirstNameAndDeptName(String deptName,String empId) {
+		//return empList.stream().filter(e -> e.getEmpId() == empId).findFirst().get();
+		return daoRef.findByFirstNameAndDepartmentName(deptName,empId);
+	}
+	
+	@Override
 	public void addEmployee(Employee employee) {
 		//empList.add(employee);
 		daoRef.save(employee);
