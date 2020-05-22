@@ -9,6 +9,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -20,10 +21,12 @@ import com.java.spring.form.model.Employee;
 public class EmployeeDAO {
 
 	private JdbcTemplate template;
+	private JdbcTemplate template2;
 
 	@Autowired
-	public EmployeeDAO(DataSource dataSource) {
+	public EmployeeDAO(@Qualifier("mysql-database") DataSource dataSource,@Qualifier("oracle-database") DataSource dataSource2) {
 		template = new JdbcTemplate(dataSource);
+		template2 = new JdbcTemplate(dataSource2);
 	}
 
 	public void saveEmployee(Employee e) {
@@ -53,25 +56,6 @@ public class EmployeeDAO {
 	}
 
 	public List<Employee> getAllEmployees() {
-//		return template.query("select id,firstName,lastName,freePasses,postalCode,email from employee_mst",new ResultSetExtractor<List<Employee>>(){  
-//		    
-//		     public List<Employee> extractData(ResultSet rs) throws SQLException,  
-//		            DataAccessException {  
-//		      
-//		        List<Employee> list=new ArrayList<Employee>();  
-//		        while(rs.next()){  
-//		        	Employee e=new Employee();  
-//		        e.setId(rs.getInt(1));  
-//		        e.setFirstName(rs.getString(2));  
-//		        e.setLastName(rs.getString(3));  
-//		        e.setFreePasses(rs.getInt(4));
-//		        e.setPostalCode(rs.getString(5));
-//		        e.setEmail(rs.getString(6));
-//		        list.add(e);
-//		        }  
-//		        return list;  
-//		        }  
-//		    });  
 		List<Employee> list = new ArrayList<Employee>();
 		try {
 			PreparedStatement st = (PreparedStatement) template.getDataSource().getConnection()
@@ -123,7 +107,7 @@ public class EmployeeDAO {
 		try {
 			PreparedStatement st = (PreparedStatement) template.getDataSource().getConnection()
 					.prepareStatement("delete from employee_mst where id=?");
-			st.setInt(1, 0);
+			st.setInt(1, empId);
 
 			int i = st.executeUpdate();
 			template.getDataSource().getConnection().setAutoCommit(false);

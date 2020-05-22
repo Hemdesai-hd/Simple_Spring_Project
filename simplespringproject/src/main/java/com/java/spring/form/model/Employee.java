@@ -8,6 +8,8 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 
+import com.java.spring.form.annotations.OwnAnnotation;
+
 public class Employee {
 
 	private Integer id;
@@ -27,6 +29,7 @@ public class Employee {
 	
 	@NotNull(message = "is required")
 	@Email(message = "Invalid email! Please enter valid email")
+	@OwnAnnotation(message = "length should be less than 30")
 	private String email;
 	
 	public Integer getId() {

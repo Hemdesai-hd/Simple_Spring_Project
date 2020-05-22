@@ -10,14 +10,13 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
-@PropertySource("classpath:database.properties")
+@PropertySource("classpath:anotherdatabase.properties")
 @EnableTransactionManagement
-public class DatabaseConfiguration {
-
+public class ODatabaseCofiguration {
 	@Autowired
 	private org.springframework.core.env.Environment environment;
 	
-	@Bean(name = "mysql-database")
+	@Bean(name = "oracle-database")
 	public DataSource datasource() {
 		 DriverManagerDataSource dataSource = new DriverManagerDataSource();
 	        dataSource.setDriverClassName(environment.getRequiredProperty("jdbc.driverClassName"));
