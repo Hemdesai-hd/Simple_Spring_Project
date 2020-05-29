@@ -61,6 +61,6 @@ public class EmployeeServiceImpl implements IEmployeeService{
 	@Override
 	public void deleteEmployee(int empId) {
 		//empList.removeIf(e -> e.getEmpId() == empId);
-		daoRef.deleteById(empId);
+//		/daoRef.deleteById(empId);
 	}
 }

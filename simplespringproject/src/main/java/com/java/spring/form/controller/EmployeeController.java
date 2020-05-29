@@ -1,9 +1,12 @@
 package com.java.spring.form.controller;
 
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
+import javax.ws.rs.Produces;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -15,8 +18,10 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.itextpdf.text.DocumentException;
 import com.java.spring.form.dao.EmployeeDAO;
 import com.java.spring.form.model.Employee;
 
@@ -32,6 +37,7 @@ public class EmployeeController {
 	
 	@Autowired
 	private EmployeeDAO employeeDao;
+	RestTemplate restTemplate = new RestTemplate();
 	
 	@RequestMapping("/showForm")
 	public String showForm(Model model) {
@@ -52,7 +58,7 @@ public class EmployeeController {
 	
 	@RequestMapping("/viewemployees")  
     public ModelAndView viewEmployees(){  
-        List<Employee> list=employeeDao.getAllEmployees();
+        List<Employee> list = employeeDao.getAllEmployees();
         ModelAndView mv = new ModelAndView("employee-confirmation");
         mv.addObject("employee", list);
         return mv;
@@ -81,6 +87,18 @@ public class EmployeeController {
 			employeeDao.updateEmployee(employee);
 			return "redirect:/employee/viewemployees";
 		}
+		
+	}
+	@RequestMapping("/generatePdf")
+	public String generatePdfReport() throws FileNotFoundException, DocumentException, MalformedURLException {
+//		if(bindingResult.hasErrors()) {
+//			return "employee-form";
+//		}else {
+			List<Employee> list=employeeDao.getAllEmployees();
+			employeeDao.generatePdf(list);
+			employeeDao.generatePdf1();
+			return "redirect:/employee/viewemployees";
+//		}
 		
 	}
 }
